@@ -7,40 +7,10 @@ public class ValueCalculator {
     private int arrSize;
     private int halfArrSize;
 
-
     public ValueCalculator(int arrSize) {
         this.arrSize = Math.max(arrSize, 1_000_000);
         halfArrSize = this.arrSize / 2;
         arr = new float[this.arrSize];
-    }
-
-    public void executeWithTwoThreads() {
-        long start = System.currentTimeMillis();
-        Arrays.fill(arr, 1.0f);
-
-
-        float[] arrCopy1 = Arrays.copyOfRange(arr, 0, halfArrSize);
-        float[] arrCopy2 = Arrays.copyOfRange(arr, halfArrSize, arrSize);
-
-        Thread t1 = new Thread(() -> changeValues(arrCopy1));
-        Thread t2 = new Thread(() -> changeValues(arrCopy2));
-
-        t1.start();
-        t2.start();
-
-        try {
-           t1.join();
-           t2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.arraycopy(arr, 0, arrCopy1, 0, halfArrSize);
-        System.arraycopy(arr, halfArrSize, arrCopy2, 0, halfArrSize);
-
-        shuffleArray();
-        long end = System.currentTimeMillis();
-        System.out.println("Calculate with two threads was executed in " + (end - start) + " ms. Max value is " + findMaxValue());
     }
 
     public void executeWithOneThread() {
