@@ -55,7 +55,7 @@ public class ValueCalculator {
 
         shuffleArray();
         long end = System.currentTimeMillis();
-        System.out.println("Calculate with " + numThreads + " executed in " + (end-start) + " ms. Max value is " + findMaxValue());
+        System.out.println("Calculate with " + numThreads + " threads executed in " + (end-start) + " ms. Max value is " + findMaxValue());
     }
 
     private void changeValues(float[] array) {
