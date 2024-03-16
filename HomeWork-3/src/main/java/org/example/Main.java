@@ -4,11 +4,9 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         Bar bar = new Bar(10, 2);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             bar.acceptClient();
-            //Thread.sleep(1);
-            System.out.println(bar.getOrders().size());;
+            Thread.sleep(100);
         }
-
     }
 }

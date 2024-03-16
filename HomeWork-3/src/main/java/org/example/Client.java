@@ -1,25 +1,20 @@
 package org.example;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class Client implements Runnable{
 
     private String name;
-    private Bar bar;
-    private Random random = new Random();
+    private final Bar bar;
+    private final Random random = new Random();
 
     public Client(Bar bar) {
-        ;
         this.bar = bar;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void run() {
         try {
+            name = Thread.currentThread().getName();
             createOrder();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -30,6 +25,8 @@ public class Client implements Runnable{
 
         String drink = bar.getMenu()[random.nextInt(bar.getMenu().length)];
         String[] order = {name, drink};
-
+        Thread.sleep(50);
+        System.out.println("Client " + name + " ordered " + drink);
+        bar.getOrders().add(order);
     }
 }
