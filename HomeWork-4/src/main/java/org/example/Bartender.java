@@ -20,7 +20,7 @@ public class Bartender implements Runnable {
         try {
             Thread.sleep(100);
             do {
-                String[] order = bar.getOrders().remove().get();
+                String[] order = bar.getOrders().take().get();
                 clientName = order[0];
                 drink = order[1];
                 prepareDrink();

@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.Queue;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Bar {
 
@@ -13,9 +14,9 @@ public class Bar {
     };
     private final ExecutorService clientExecutor;
     private final ExecutorService bartenderExecutor;
-    private Queue<Future<String[]>> orders = new LinkedBlockingQueue<>();
+    private BlockingQueue<Future<String[]>> orders = new LinkedBlockingQueue<>();
     private final int maxClients;
-    private int clientsCounter = 0;
+    private AtomicInteger clientsCounter = new AtomicInteger(0);
 
     public Bar(int numOfBartenders, int maxClients) {
         this.maxClients = maxClients;
@@ -30,14 +31,14 @@ public class Bar {
         return menu;
     }
 
-    public Queue<Future<String[]>> getOrders() {
+    public BlockingQueue<Future<String[]>> getOrders() {
         return orders;
     }
 
     public void acceptClient () {
-        if (maxClients > clientsCounter) {
+        if (maxClients > clientsCounter.get()) {
             orders.add(clientExecutor.submit(new Client(this)));
-            clientsCounter++;
+            clientsCounter.incrementAndGet();
         } else {
             System.out.println("The bar is full. Please try again later...");
         }
@@ -50,7 +51,7 @@ public class Bar {
 
     public void leaveBar(String clientName) {
         System.out.println(clientName + " leave bar");
-        clientsCounter--;
+        clientsCounter.decrementAndGet();
     }
     public void shutdown() {
         clientExecutor.shutdown();
