@@ -1,10 +1,18 @@
 package com.example.HomeWork5.model;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 public class User {
 
     private int id;
     private String name;
-    private List<Task> tasks;
+    private String phoneNumber;
+
+    public User(String name) {
+        this.name = name;
+    }
 }

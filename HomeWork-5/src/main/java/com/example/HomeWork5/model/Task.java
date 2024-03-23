@@ -1,6 +1,8 @@
 package com.example.HomeWork5.model;
 
 import com.example.HomeWork5.enums.TaskPriority;
+import com.example.HomeWork5.enums.TaskStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,18 +10,27 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class Task implements Comparable<Task>{
+@Builder
+public class Task {
 
-    //Реалізуйте можливість створювати нові завдання з вказанням назви, опису, терміну виконання та пріоритету.
     private int id;
     private String name;
     private String description;
     private LocalDate deadline;
     private TaskPriority priority;
+    private TaskStatus taskStatus;
     private int userId;
 
     @Override
-    public int compareTo(Task o) {
-        return 0;
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", priority=" + priority +
+                ", taskStatus=" + taskStatus +
+                ", userId=" + userId +
+                '}';
     }
 }
