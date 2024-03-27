@@ -26,7 +26,6 @@ public class ProxyService {
                         int size = response.getArticles().size();
                         articles = new String[size];
                         for (int i = 0; i < size; i++) {
-                            System.out.println(apiKey);
                             articles[i] = ("!!!Glory to Ukraine!!! " + response.getArticles().get(i).getTitle());
                         }
 
