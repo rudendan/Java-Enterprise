@@ -4,38 +4,39 @@ import com.example.homework6.converter.UserConverter;
 import com.example.homework6.dto.UserDto;
 import com.example.homework6.exception.NotFoundException;
 import com.example.homework6.model.User;
+import com.example.homework6.repository.dao.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
-    private List<User> users = new ArrayList<>();
-    public static int idGenerator = 0;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public UserDto create(UserDto userDto) {
         User user = UserConverter.toUser(userDto);
-        user.setId(++idGenerator);
-        users.add(user);
-        return UserConverter.toUserDto(user);
+        return UserConverter.toUserDto(userRepository.add(user));
     }
 
     public List<UserDto> getAll() {
-        return users.stream().map(UserConverter::toUserDto).toList();
+        return userRepository.getAll().stream().map(UserConverter::toUserDto).toList();
     }
 
-    public void delete(int userId) {
-        User user = users.stream()
-                .filter(u -> u.getId() == userId)
-                .findFirst().orElseThrow(() -> new NotFoundException("There is now such user"));
-        users.remove(user);
+    public void delete(int id) {
+        if (getById(id) != null) {
+            userRepository.delete(id);
+        }
     }
 
-    public UserDto getById(int id) {
-        return UserConverter.toUserDto(users.stream()
-                .filter(user -> user.getId() == id)
-                .findFirst().orElseThrow(() -> new NotFoundException("There is now such user")));
+    public User getById(int id) {
+        User user = userRepository.getById(id);
+        if (user == null) {
+            throw new NotFoundException("There is now such user");
+        }
+        return user;
     }
 }

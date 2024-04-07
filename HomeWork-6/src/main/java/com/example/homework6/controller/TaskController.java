@@ -1,7 +1,6 @@
 package com.example.homework6.controller;
 
 import com.example.homework6.dto.TaskDto;
-import com.example.homework6.enums.TaskStatus;
 import com.example.homework6.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    private TaskService taskService;
+    private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
@@ -21,22 +20,22 @@ public class TaskController {
 
     @GetMapping
     public List<TaskDto> get() {
-        return taskService.showAllTasks();
+        return taskService.showAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getById(@PathVariable int id) {
-        return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.OK);
+        return new ResponseEntity<>(taskService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping("/{filter}/{value}")
-    public <T> ResponseEntity<List<TaskDto>> getByFilter(@PathVariable String filter, @PathVariable T value) {
+    public ResponseEntity<List<TaskDto>> getByFilter(@PathVariable String filter, @PathVariable String value) {
         return new ResponseEntity<>(taskService.showTasksByFilter(filter, value), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<TaskDto> create(@RequestBody TaskDto taskDto) {
-        return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(taskService.add(taskDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{taskId}/user/{userId}")
@@ -44,8 +43,8 @@ public class TaskController {
         return new ResponseEntity<>(taskService.assignTaskToUser(taskId, userId), HttpStatus.OK);
     }
 
-    @PutMapping("/{taskId}/{status}")
-    public ResponseEntity<TaskDto> changeStatus(@PathVariable int taskId, @PathVariable TaskStatus status) {
-        return new ResponseEntity<>(taskService.changeStatus(taskId, status), HttpStatus.OK);
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskDto> changeStatus(@PathVariable int taskId, @RequestBody TaskDto taskDto) {
+        return new ResponseEntity<>(taskService.update(taskId, taskDto), HttpStatus.OK);
     }
 }

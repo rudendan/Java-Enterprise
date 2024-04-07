@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - C:/Users/Tom/Docker_workspace/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: task_manager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: docker-task-manager
+    environment:
+      - db.login=postgres
+      - db.password=mypassword
+      - db.path=jdbc:postgresql://postgres:5432/task_manager
+    ports:
+      - "8181:8181"
+    depends_on:
+      - postgres
+    restart: always
