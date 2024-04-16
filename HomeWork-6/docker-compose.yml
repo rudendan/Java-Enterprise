@@ -16,9 +16,10 @@ services:
     build: .
     container_name: docker-task-manager
     environment:
-      - db.login=postgres
-      - db.password=mypassword
-      - db.path=jdbc:postgresql://postgres:5432/task_manager
+      - spring.datasource.username=postgres
+      - spring.datasource.password=mypassword
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/task_manager
+      - useJPA=true
     ports:
       - "8181:8181"
     depends_on:

@@ -3,12 +3,11 @@ package com.example.homework6.service;
 import com.example.homework6.converter.TaskConverter;
 import com.example.homework6.converter.UserConverter;
 import com.example.homework6.dto.TaskDto;
-import com.example.homework6.enums.TaskPriority;
 import com.example.homework6.enums.TaskStatus;
 import com.example.homework6.exception.NotFoundException;
 import com.example.homework6.model.Task;
 import com.example.homework6.model.User;
-import com.example.homework6.repository.dao.TaskRepository;
+import com.example.homework6.repository.interfaces.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +30,11 @@ public class TaskService {
         Task task = TaskConverter.toTask(taskDto);
         task.setTaskStatus(TaskStatus.NEW);
 
-        return TaskConverter.toTaskDto(taskRepository.create(task));
+        return TaskConverter.toTaskDto(taskRepository.save(task));
     }
 
     public List<TaskDto> showAll() {
-        return taskRepository.getAll().stream()
+        return taskRepository.findAll().stream()
                 .map(TaskConverter::toTaskDto).toList();
     }
 
@@ -50,7 +49,7 @@ public class TaskService {
         }
     }
 
-    public TaskDto assignTaskToUser(int taskId, int userId) {
+    public TaskDto assignTaskToUser(Long taskId, Long userId) {
         Task task = taskRepository.getById(taskId);
         User user = userService.getById(userId);
 
@@ -61,10 +60,10 @@ public class TaskService {
 
         task.setUser(user);
         task.setTaskStatus(TaskStatus.IN_WORK);
-        return TaskConverter.toTaskDto(taskRepository.update(taskId, task));
+        return TaskConverter.toTaskDto(taskRepository.updateTaskById(taskId, task));
     }
 
-    public TaskDto getById(int taskId) {
+    public TaskDto getById(Long taskId) {
         Task task = taskRepository.getById(taskId);
 
         if (task == null) {
@@ -74,7 +73,7 @@ public class TaskService {
         return TaskConverter.toTaskDto(task);
     }
 
-    public TaskDto update(int taskId, TaskDto taskDto) {
+    public TaskDto update(Long taskId, TaskDto taskDto) {
         Task task = taskRepository.getById(taskId);
 
         if (task == null) {
@@ -95,6 +94,6 @@ public class TaskService {
         if (taskDto.getUserDto() != null) {
             task.setUser(UserConverter.toUser(taskDto.getUserDto()));
         }
-        return TaskConverter.toTaskDto(taskRepository.update(taskId, task));
+        return TaskConverter.toTaskDto(taskRepository.updateTaskById(taskId, task));
     }
 }
