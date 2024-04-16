@@ -1,5 +1,7 @@
 package com.example.homework6.controller;
 
+
+import com.example.homework6.converter.UserConverter;
 import com.example.homework6.dto.UserDto;
 import com.example.homework6.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,7 +14,8 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private UserService userService;
+
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -25,7 +28,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> get(@PathVariable int id) {
-        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+        UserDto userDto = UserConverter.toUserDto(userService.getById(id));
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping

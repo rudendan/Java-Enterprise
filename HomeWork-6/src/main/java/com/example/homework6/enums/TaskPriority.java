@@ -4,13 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum TaskPriority {
-    LOW(3),
-    MEDIUM(2),
-    HIGH(1);
 
-    private int priority;
+    LOW("LOW"),
+    MEDIUM("MEDIUM"),
+    HIGH("HIGH");
 
-    TaskPriority(int priority) {
+    private final String priority;
+
+    TaskPriority(String priority) {
         this.priority = priority;
     }
 }

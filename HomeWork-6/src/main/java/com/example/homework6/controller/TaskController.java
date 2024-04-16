@@ -13,6 +13,8 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
+
+    private final TaskService taskService;
     private TaskService taskService;
 
     public TaskController(TaskService taskService) {
@@ -21,11 +23,18 @@ public class TaskController {
 
     @GetMapping
     public List<TaskDto> get() {
+      
+        return taskService.showAll();
         return taskService.showAllTasks();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getById(@PathVariable int id) {
+        return new ResponseEntity<>(taskService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{filter}/{value}")
+    public ResponseEntity<List<TaskDto>> getByFilter(@PathVariable String filter, @PathVariable String value) {
         return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.OK);
     }
 
@@ -36,12 +45,18 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskDto> create(@RequestBody TaskDto taskDto) {
-        return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(taskService.add(taskDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{taskId}/user/{userId}")
     public ResponseEntity<TaskDto> assignTaskToUser(@PathVariable int taskId, @PathVariable int userId) {
         return new ResponseEntity<>(taskService.assignTaskToUser(taskId, userId), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskDto> changeStatus(@PathVariable int taskId, @RequestBody TaskDto taskDto) {
+        return new ResponseEntity<>(taskService.update(taskId, taskDto), HttpStatus.OK);
     }
 
     @PutMapping("/{taskId}/{status}")
