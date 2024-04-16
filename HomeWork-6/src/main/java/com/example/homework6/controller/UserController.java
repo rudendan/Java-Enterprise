@@ -1,5 +1,6 @@
 package com.example.homework6.controller;
 
+
 import com.example.homework6.converter.UserConverter;
 import com.example.homework6.dto.UserDto;
 import com.example.homework6.service.UserService;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
 
     private final UserService userService;
 

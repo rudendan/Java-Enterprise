@@ -3,6 +3,7 @@ package com.example.homework6.service;
 import com.example.homework6.converter.TaskConverter;
 import com.example.homework6.converter.UserConverter;
 import com.example.homework6.dto.TaskDto;
+import com.example.homework6.enums.TaskPriority;
 import com.example.homework6.enums.TaskStatus;
 import com.example.homework6.exception.NotFoundException;
 import com.example.homework6.model.Task;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class TaskService {
@@ -52,6 +54,7 @@ public class TaskService {
         Task task = taskRepository.getById(taskId);
         User user = userService.getById(userId);
 
+
         if (task == null) {
             throw new NotFoundException("There is now such task");
         }
@@ -63,6 +66,7 @@ public class TaskService {
 
     public TaskDto getById(int taskId) {
         Task task = taskRepository.getById(taskId);
+
         if (task == null) {
             throw new NotFoundException("There is now such task");
         }
