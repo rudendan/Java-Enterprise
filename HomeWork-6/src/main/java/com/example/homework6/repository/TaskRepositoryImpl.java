@@ -5,7 +5,7 @@ import com.example.homework6.enums.TaskStatus;
 import com.example.homework6.model.Task;
 import com.example.homework6.model.User;
 import com.example.homework6.repository.dao.TaskRepository;
-import com.example.homework6.service.UserService;
+import com.example.homework6.repository.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +17,12 @@ import java.util.List;
 public class TaskRepositoryImpl implements TaskRepository {
 
     private final Connection connection;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskRepositoryImpl(Connection connection, UserService userService) {
+    public TaskRepositoryImpl(Connection connection, UserRepository userRepository) {
         this.connection = connection;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         }
 
         if (resultSet.getString("user_id") != null) {
-            User user = userService.getById(Integer.parseInt(resultSet.getString("user_id")));
+            User user = userRepository.getById(Integer.parseInt(resultSet.getString("user_id")));
             task.setUser(user);
         }
 
