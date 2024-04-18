@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> get(@PathVariable int id) {
+    public ResponseEntity<UserDto> get(@PathVariable Long id) {
         UserDto userDto = UserConverter.toUserDto(userService.getById(id));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         userService.delete(id);
     }
 }
